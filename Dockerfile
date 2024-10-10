@@ -1,7 +1,7 @@
 # Written By: Oh Seung Jae
 # Type the following command to build the image:
-# docker build -t swe_ubuntu_image .
-# docker run -it -v $(pwd):/app --name swe_ubuntu_container swe_ubuntu_image
+# docker build -t ssa_image .
+# docker run -it -v "$(pwd):/app" --name ssa_container ssa_image
 
 FROM ubuntu:24.04
 WORKDIR /usr/local/app
@@ -24,10 +24,14 @@ RUN apt-get install -y \
     g++ \
     python3 \
     python3-pip \
+    python3-venv \
     vim
 
-# Install LangChain globally using --break-system-packages
-RUN pip install --break-system-packages langchain==0.3.2
+# Set up a virtual environment for Python
+RUN python3 -m venv /usr/local/app/venv
+
+# Activate the virtual environment and install LangChain and Scrapy
+RUN /usr/local/app/venv/bin/pip install langchain==0.3.2 scrapy
 
 # Install Node.js and npm
 ENV NVM_DIR=/root/.nvm
@@ -51,6 +55,9 @@ RUN apt-get update && apt-get install -y mongodb-org
 
 # Create MongoDB data directory
 RUN mkdir -p /data/db
+
+# Activate the virtual environment automatically when the container starts
+RUN echo "source /usr/local/app/venv/bin/activate" >> ~/.bashrc
 
 # Default command to keep the container running
 CMD ["bash"]

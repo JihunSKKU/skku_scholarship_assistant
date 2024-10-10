@@ -1,9 +1,29 @@
 # 스꾸장학비서
 
 ## Overview
+
+TBD
+
+## How to Use
+
+```bash
+git clone https://github.com/JihunSKKU/skku_scholarship_assistant.git
+cd skku_scholarship_assistant
+docker build -t ssa_image .
+docker run -it -v "$(pwd):/app" --name ssa_container ssa_image
+```
+
+OR if the Docker image and container have already been created:
+
+```bash
+docker run ssa_container
+docker exec -it ssa_container bash
+```
+
 TBD
 
 ## License
+
 TBD
 
 ## Contributers
